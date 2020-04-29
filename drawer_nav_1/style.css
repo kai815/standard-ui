@@ -39,6 +39,7 @@ html {
 .Nav {
   overflow: auto;
 }
+
 /* 開閉の時のアニメーション */
 .Drawer[aria-expanded] {
   transition-property: visibility;
