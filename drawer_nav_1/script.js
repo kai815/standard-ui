@@ -8,6 +8,11 @@
   const rootElement = document.documentElement;
   const scrollLockModifier = "drawerOpen";
 
+  const scrollbarFixTargets = document.querySelectorAll(".js-scrollbarFix");
+  let scrollbarFix = false;
+
+
+
   // 現在の状態（開いていたらtrue）
   let drawerOpen = false;
 
@@ -47,10 +52,12 @@
   }
 
   function activateScrollLock() {
+    addScrollbarWidth();
     rootElement.classList.add(scrollLockModifier);
   }
 
   function deactivateScrollLock() {
+    removeScrollbarWidth();
     rootElement.classList.remove(scrollLockModifier);
   }
 
@@ -62,6 +69,33 @@
       deactivateScrollLock();
     }
   }
+
+  //valueは文字列
+  function addScrollbarMargin(value) {
+    const targetsLength = scrollbarFixTargets.length;
+    for (let i = 0; i < targetsLength; i++) {
+      scrollbarFixTargets[i].style.marginRight = value;
+    }
+  }
+
+  function addScrollbarWidth() {
+    const scrollbarWidth = window.innerWidth - rootElement.clientWidth;
+    if (!scrollbarWidth) {
+      scrollbarFix = false;
+      return;
+    }
+    const value = scrollbarWidth + "px";
+    addScrollbarMargin(value);
+    scrollbarFix = true;
+  }
+  
+  function removeScrollbarWidth() {
+    if (!scrollbarFix) {
+      return;
+    }
+    addScrollbarMargin("");
+  }
+
   openButton.addEventListener("click", onClickOpenButton, false);
   closeButton.addEventListener("click", onClickCloseButton, false);
   backdrop.addEventListener("click", onClickCloseButton, false);
