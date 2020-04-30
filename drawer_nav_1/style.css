@@ -1,4 +1,9 @@
 html {
+  overflow: auto;
+}
+
+html.drawerOpen {
+  overflow: hidden;
 }
 
 .Header {
