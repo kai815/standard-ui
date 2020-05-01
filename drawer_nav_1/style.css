@@ -67,6 +67,7 @@ html.drawerOpen {
 /* 開いているとき */
 .Drawer[aria-expanded="true"] {
   visibility: visible;
+  transition-duration: 0s;
 }
 
 .Drawer[aria-expanded="true"] .Drawer-backdrop {
