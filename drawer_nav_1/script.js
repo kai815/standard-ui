@@ -11,6 +11,9 @@
   const scrollbarFixTargets = document.querySelectorAll(".js-scrollbarFix");
   let scrollbarFix = false;
 
+  const tabbableElements = drawer.querySelectorAll("a[href], button:not(:disabled)");
+  const firstTabbable = tabbableElements[0];
+  const lastTabbable = tabbableElements[tabbableElements.length - 1];
 
 
   // 現在の状態（開いていたらtrue）
@@ -45,6 +48,7 @@
   function onClickOpenButton() {
     activateScrollLock()
     openDrawer();
+    firstTabbable.focus();
   }
 
   function onClickCloseButton() {
@@ -67,6 +71,7 @@
     }
     if (!drawerOpen) {
       deactivateScrollLock();
+      openButton.focus();
     }
   }
 
@@ -96,8 +101,35 @@
     addScrollbarMargin("");
   }
 
+  function onKeydownTabKeyFirstTabbable(event) {
+    if(event.key !== "Tab" || !event.shiftKey) {
+      return;
+    }
+    event.preventDefault();
+    lastTabbable.focus();
+  }
+  
+  function onKeydownTabKeyLastTabbable(event) {
+    if(event.key !== "Tab" || event.shiftKey) {
+      return;
+    }
+    event.preventDefault();
+    firstTabbable.focus();
+  }
+
+  function onKeydownEsc(event) {
+    if(!drawerOpen || event.key !== "Escape") {
+      return;
+    }
+    event.preventDefault();
+    closeDrawer();
+  }
+
   openButton.addEventListener("click", onClickOpenButton, false);
   closeButton.addEventListener("click", onClickCloseButton, false);
   backdrop.addEventListener("click", onClickCloseButton, false);
   drawer.addEventListener("transitionend", onTransitionendDrawer, false);
+  firstTabbable.addEventListener("keydown", onKeydownTabKeyFirstTabbable, false);
+  lastTabbable.addEventListener("keydown", onKeydownTabKeyLastTabbable, false);
+  window.addEventListener("keydown", onKeydownEsc, false);
 })();
